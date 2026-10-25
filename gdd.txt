@@ -1,0 +1,260 @@
+AntWar: Game Design Document
+Game jam draft v1 (2-day scope). Items marked [PROPOSED] were not in the original
+notes and need your approval.
+1. Concept
+Ant War is a real-time 2D strategy game with a Mount & Blade style world map. The player
+picks an ant species (class), then expands across a map of anthills by scouting, attacking
+and holding territory. Ants never die. They get injured and need time to recover, so every
+attack leaves your own colony exposed.
+Genre: Real-time map strategy Perspective: 2D top-down world map Session length
+[PROPOSED]: 15 to 25 minutes per run
+2. Design Pillars
+1. Risk vs. reward. Sending ants out is always a gamble because the home hill is left weak.
+2. Scout before you strike. Information is the main resource. You see targets before you
+attack them.
+3. Relationships matter. Attacking one species can bring its allies down on you.
+4. Nobody dies. Losses are measured in downtime, not casualties.
+3. Game Flow
+1. Title screen
+2. Class (species) select
+3. World map (all gameplay happens here)
+4. Win or lose screen, then restart or back to the title screen
+4. Class Selection
+The player chooses a species, like choosing a class in a soulslike. Each species has
+different starting stats and diplomacy.
+Example: Bullet ants have strong attack and low numbers.
+[PROPOSED] Stats per species (keep to 4 for the jam):
+Ant War: Game Design Document
+Page 1 of 9
+[PROPOSED] Species count: 4 playable and 4 total on the map for the jam. For example
+Bullet Ants, Fire Ants, ArmyAnts and WeaverAnts. Add more only if time allows.
+5.World Map
+A single 2D map with fog of war: anthills are hidden until scouted.
+The player's starting anthill is visible from the start.
+Anthills are placed at fixed positions, with a number of ants shown above each hill.
+[PROPOSED] Map layout is hand-placed (no procedural generation), about 8 to 12
+anthills total.
+[PROPOSED] The map is a single screen or a small scrolling area with a camera that
+follows the scout.
+6. Anthill Menu
+Clicking an anthill opens a menu. This pauses the game.
+Own anthill:
+Number of ants in the colony (available, away, recovering)
+Diplomacy panel: which species are allied and which are hostile, to the player and to
+each other
+Send out scout button
+Recruit scout button (only when a scout is present, see section 7)
+Scouted enemy or ally anthill:
+Species living there
+Ant count
+Their allies
+Attack button
+Stat Effect
+Attack Power per ant in battle
+Defense Power per ant when defending
+Recovery speed How fast injured ants return to action
+Growth rate How fast the hill's max colony size grows over time
+Ant War: Game Design Document
+Page 2 of 9
+AnthillBuffs
+Every anthill has one buff that applies to the colony living there. Whoever owns the hill
+gets the buff, so capturing a hill is also a way to pick up a perk.
+[PROPOSED] Buffs are hand-assigned per hill (no randomness), shown in the anthill
+menu, and carry over to the new owner on capture. Start with 3 or 4 buffs for the jam and
+add the rest only if time allows.
+Colony Growth
+Every anthill slowly grows its max ant capacity over time, which grows its colony. Each
+species has its own growth rate, so some species snowball faster than others.
+Growth is slow and continuous, running in real time.
+Growth rate comes from the hill's species stat and can be boosted by the Warren buff.
+[PROPOSED] Ant count fills up toward the current max capacity at a steady rate, so
+injured ants and sent-out ants still count toward the colony.
+[PROPOSED] Ants gained from a capture that exceed the new hill's capacity stay in
+the colony but don't add extra growth.
+This applies to NPC hills too, so waiting too long makes the map harder. It acts as a soft
+timer on the player.
+7. Scouts
+A scout is a controllable unit on the world map.
+Sent from an anthill via its menu.
+Click on the map to move it. It reveals anthills it gets near.
+Clicking a scouted anthill opens its info menu.
+Buff Effect
+Healing Grounds Injured ants recover faster
+Fortified Defending ants get a defense bonus
+Warren Colony grows faster
+War Camp Ants sent from here get an attack bonus
+Lookout Scouts from here move faster or reveal more of the
+map
+Ant War: Game Design Document
+Page 3 of 9
+Multi-hill attacks: if the player owns several anthills, they take the scout to another
+owned hill and click Recruit scout. A new scout spawns and follows the first. Repeat
+for as many hills as needed.
+When the player clicks Attack, every scout returns to its own home hill. As each
+arrives, the player is prompted for how many ants to send from that hill.
+Moving a single scout straight to a target means only its home hill is asked.
+[PROPOSED] Scout rules:
+Scouts are invincible while roaming the map. Nothing can catch, injure or block them,
+and they only fight when an army attacks an anthill or defenders hold one.
+Only one scout trip per hill at a time.
+NPC scouts are visible to the player so they can react.
+8. Attack Flow
+1. Scout reaches the target and the player opens its menu.
+2. Player clicks Attack.
+3. Scouts return home.
+4. On arrival at each home hill, a slider prompts "How many ants to send?" (this pauses
+the game).
+5. Ants march to the target (travel time).
+6. Battle resolves (see section 9).
+7. Ants return home and enter recovery.
+The core tradeoff: more ants means a better chance to win but a weaker home defense.
+Fewer ants means a safer home but a bigger share of the sent ants get injured.
+Because marching, fighting and returning all take time, the home hill is exposed for a long
+window.
+9.Battle Resolution (notin the original notes)
+This needs a decision, because it is the heart of the game. [PROPOSED] for jam scope:
+automatic and instant resolution when the army arrives, shown as a short animation or
+timer bar.
+Formula:
+Attacker power = sent ants x Attack stat
+Defender power = healthy ants x Defense stat (+ a defender bonus, for example 10 to
+20 percent)
+Ant War: Game Design Document
+Page 4 of 9
+Higher power wins. Add a small random factor (about plus or minus 10 percent) so it
+isn't fully deterministic.
+Injury count for each side scales with the opponent's power, for example the loser has
+most of its ants injured and the winner a smaller share.
+The winner of an attack captures the hill. Defenders at that hill join the attacker's colony
+(see section 11).
+10.Injury and Recovery
+Ants never die.
+Injured ants are inactive: they can't attack or defend.
+Each injured ant has a recovery timer. [PROPOSED] The timer is per batch, not per ant,
+to keep the data simple.
+Injuries apply to both winners and losers, and to defenders when a hill is attacked.
+Recovery speed is a species stat.
+Example: a hill with 10 ants is attacked and 6 are injured, so only 4 can defend until the
+injured ants recover.
+11. Capturing Anthills
+A hill is capturable when the player can send more power than its defenders.
+On capture, the defending ants join the player's colony.
+[PROPOSED] Captured ants arrive as injured/recovering, so a fresh capture isn't
+instantly strong.
+[PROPOSED] The hill's species becomes the owner's, but ants keep their original
+species stats. This is optional for the jam. Simplest: all ants use the owner's class stats.
+Captured hills can spawn scouts and send attacks like the home hill, and they bring
+their buff and growth with them.
+12. Diplomacy and Retaliation
+Every species has a relationship with every other species: ally, hostile or neutral.
+Relations are fixed at the start of the game (no diplomacy actions for the jam).
+The diplomacy info panel in the anthill menu shows these relations.
+Ally retaliation: when species A is attacked, A's allies see the player's colony is weakened
+(ants are out attacking) and may launch their own attack on the player's hill to retaliate.
+Ant War: Game Design Document
+Page 5 of 9
+[PROPOSED] Rule: when an attack on A starts, each ally ofA rolls a chance to send a
+retaliation scout toward the nearest player hill. A retaliation attack happens only if the
+player's home defense looks weaker than the ally's available force.
+This is the reason players plan around relations before attacking.
+13. NPC Behavior
+NPC anthills follow the same rules as the player:
+1. Send a scout toward a target (visible to the player).
+2. Scout reaches the target and checks the numbers.
+3. If attack is favorable, scout returns, NPC picks how many ants to send.
+4. Army marches, fights, returns and recovers.
+[PROPOSED] Simple AI for jam scope:
+Each NPC hill has a decision timer (for example every 30 to 60 seconds).
+It picks the weakest visible neighbor (preferring hostile species).
+It sends if its available power exceeds the target's by a margin, and keeps a minimum
+reserve at home.
+Retaliation (section 12) is a separate trigger.
+NPC difficulty can be tuned with the decision timer and the margin.
+14.Win and Lose Conditions
+Win: the player owns every anthill on the map.
+Lose: every anthill the player owns has been captured.
+[PROPOSED] Show a short summary on end: time played, hills captured, hills lost.
+15. Real-Time and Pause
+The game runs in real time.
+Only these pause the game: anthill menus, the send-ants prompt and the pause menu.
+[PROPOSED] Add a speed control (1x, 2x) to make waiting less tedious. This is optional
+and low effort.
+16. UI Checklist
+Class select screen
+Ant War: Game Design Document
+Page 6 of 9
+World map HUD: total ants, number of hills owned, pause button
+Ant count labels above every anthill (scouted hills only)
+Anthill menu (own and scouted variants)
+Diplomacy panel
+Send-ants slider prompt
+Battle result popup (win or loss, injuries)
+Pause menu
+Win and lose screens
+[PROPOSED] Alert for "Your hill is under attack" and "Enemy scout spotted" (essential,
+since everything is real-time)
+17. Art and Audio Asset List(for your teammate)
+Art:
+Species icons or portraits (class select), 4 total
+Anthill sprite (one base, tinted per species)
+Scout ant sprite (walk cycle optional)
+Army marker sprite (a group of ants moving on the map)
+World map background
+UI frames, buttons and sliders
+Injured and recovering status icon
+Fog of war overlay
+Audio (optional but cheap): click, attack start, battle result sting, alert ping, one looping
+music track.
+18. Jam Scope
+Must have (MVP):
+Class select with 3 to 4 species
+World map with fog of war and a hand-placed anthill set
+Scout movement and anthill info menu
+Attack flow with send-ants prompt and automatic battle resolution
+Injury and recovery system
+Win and lose conditions
+Basic NPC AI (attack the weakest neighbor)
+Ant War: Game Design Document
+Page 7 of 9
+Should have:
+Multi-scout recruitment from several hills
+Ally retaliation
+Diplomacy panel
+Alerts for incoming attacks
+Nice to have:
+Speed control
+Species-specific abilities
+Sound and music polish
+Battle animations
+Cut if short on time: mixed-species ants after capture, procedural maps, extra species.
+19. Suggested 2-Day Schedule
+Day 1:
+Core data model: anthill (owner, species, ants, injured batches), species stats
+World map, scout movement, fog of war, anthill menu
+Attack flow end to end against one dumb target
+Day 2 morning:
+Battle resolution, injury and recovery, win and lose
+NPC AI with the same scout-and-attack rules
+Day 2 afternoon:
+Ally retaliation, multi-scout recruitment
+Alerts, balance pass, art integration, bug fixing
+Last hour: build, playtest, ship. No new features.
+20. Open Questions and Risks
+1. What happens when a scout is caught or stranded? Resolved: scouts are invincible
+while roaming and only fight during attacks or defenses.
+2. Can an NPC attack a hill while it is already under attack? Suggest yes, which is how
+chain captures happen.
+3. Can the player cancel an attack while ants are marching? Suggest no for the jam.
+Ant War: Game Design Document
+Page 8 of 9
+4. What happens to ants if their home hill is captured while they are away? Suggest
+they return to the nearest owned hill, or are absorbed by the capturer if none.
+5. Is there a cap on how fast ants regenerate or reproduce? Without growth, the game is
+a pure zero-sum shuffle. Resolved: every hill slowly grows its max capacity, at a rate set
+by species (see Colony Growth).
+6. Risk: real-time with long waits. Marches and recoveries can feel slow. Tune speeds
+early and add a speed control.
+7. Risk: scope. The multi-scout and ally retaliation systems are the most complex parts.
+Build the single-scout version first, and only then add them.
+Ant War: Game Design Document
+Page 9 of 9

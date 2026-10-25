@@ -1,0 +1,4 @@
+repository "AntsOfWar2D/AntsOfWar2D@13469532330881@cloud"
+  path "/"
+    br "/main"
+    co "/main"

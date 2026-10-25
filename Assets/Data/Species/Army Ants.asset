@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1228a9b3f08d8904897e6d52b28e5b7d, type: 3}
+  m_Name: Army Ants
+  m_EditorClassIdentifier: Assembly-CSharp::SpeciesData
+  displayName: Army Ants
+  icon: {fileID: 0}
+  hillSprite: {fileID: -3657999071349607898, guid: 9a9bb871a8e2a27409775e6e69b7cbe9, type: 3}
+  antSprite: {fileID: -2073593115391278860, guid: 48cfab7a6bcacc845a58b8066851a7a4, type: 3}
+  tint: {r: 0.25, g: 0.55, b: 1, a: 1}
+  attack: 1
+  defense: 1
+  recoverySeconds: 30
+  growthPerSec: 0.05
+  startingMaxCapacity: 30
+  allies:
+  - {fileID: 11400000, guid: b28854d69f2fd5747b393032fd49eba2, type: 2}
+  hostiles:
+  - {fileID: 11400000, guid: e0a57287958e49d45af138cffe688fd2, type: 2}
